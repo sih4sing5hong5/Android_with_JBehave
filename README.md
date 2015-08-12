@@ -42,6 +42,7 @@ BDD的實作順序應該為：
 3. 寫好JBehave的Steps檔
 4. 實作程式本身
 
+### 一般試驗
 若寫好一個Story，若放在`test/resources`的`com/example/android_with_jbehave/`，
 則必須在對應路徑`test/java/`的`com/example/android_with_jbehave/`放一個JUnitSotry設定檔。
 
@@ -70,6 +71,15 @@ BDD的實作順序應該為：
 
 * `main/java/com/example/android_with_jbehave/Game.java`
 * `main/java/com/example/android_with_jbehave/StringRenderer.java`
+
+### 用漢字命名的函式
+java是支援unicode編碼的，所以package、型態名、變數、…都可以用漢字。
+不過因為JBehave實作的關係（jbehave-core:4.0.3），Story和JUnitSotry設定檔檔名必須英文開頭。
+
+加的程式：
+* `test/resources/com/漢字/a漢字試驗.story`
+* `test/java/com/漢字/A漢字試驗.java`
+* `test/java/com/漢字/漢字步.java`
 
 
 ## 執行
