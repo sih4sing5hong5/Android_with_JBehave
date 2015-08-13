@@ -1,4 +1,5 @@
 language: android
+sudo: false
 jdk:
  - openjdk7
  - oraclejdk7
@@ -6,6 +7,10 @@ android:
   components:
     - android-22
     - build-tools-22.0.1
+    - extra-android-support
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-.+
 branches:
  only:
   - master
