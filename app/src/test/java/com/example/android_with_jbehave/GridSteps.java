@@ -30,7 +30,6 @@ public class GridSteps { // Look, Ma', I'm a POJO!
     @Then("the grid should look like $grid")
     @Aliases(values={"the grid should be $grid"})
     public void theGridShouldLookLike(String grid) {
-        assertThat(renderer.asString()).isEqualTo("XDD");
         assertThat(renderer.asString()).isEqualTo(grid);
     }
 
