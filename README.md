@@ -4,8 +4,19 @@
 試著讓Android搭配JBehave套件，
 希望可以減少大家的摸索時間。
 
-本專案已可正常試驗，會得到`3 tests completed, 2 failed`.
 
+## 執行
+
+[![Build Status](https://travis-ci.org/sih4sing5hong5/Android_with_JBehave.svg)](https://travis-ci.org/sih4sing5hong5/Android_with_JBehave)
+
+本專案已可正常試驗，會得到`BUILD SUCCESSFUL`.
+
+### Android Studio
+將`Build variants`的`test artifact`改成`Unit tests`即可。
+可以參考[Unit testing support](http://tools.android.com/tech-docs/unit-testing-support)
+
+### 指令
+`./gradlew test`
 
 ## 套件設定
 `app`裡的`build.gradle`是設定gradle以及套件相依設定
@@ -82,11 +93,3 @@ java是支援unicode編碼的，所以package、型態名、變數、…都可�
 * `test/java/com/漢字/漢字步.java`
 
 
-## 執行
-
-### Android Studio
-將`Build variants`的`test artifact`改成`Unit tests`即可。
-可以參考[Unit testing support](http://tools.android.com/tech-docs/unit-testing-support)
-
-### 指令
-`./gradlew test`
