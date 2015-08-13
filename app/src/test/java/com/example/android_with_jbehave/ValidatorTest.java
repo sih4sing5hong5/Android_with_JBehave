@@ -11,7 +11,7 @@ public class ValidatorTest {
     @Test
     public void junitTestStyle() {
 
-        assertTrue(true);
+        assertTrue(false);
     }
 
     @Test
