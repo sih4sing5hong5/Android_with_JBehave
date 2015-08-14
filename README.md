@@ -45,7 +45,7 @@ dependencies {
 ## 一般JUnit試驗
 可以參考`src/test/java/com/example/android_with_jbehave/ValidatorTest.java`檔。
 
-## 增加BDD試驗
+## JBehave的JUnit試驗
 BDD的實作順序應該為：
 
 1. 寫好Story
