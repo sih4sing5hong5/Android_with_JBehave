@@ -2,6 +2,7 @@ package com.漢字;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
+import org.jbehave.core.failures.FailingUponPendingStep;
 import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.Format;
@@ -15,9 +16,11 @@ public class A漢字試驗 extends JUnitStory {
     @Override
     public Configuration configuration() {
         return new MostUsefulConfiguration()
-                // where to find the stories
+                // 找和java相同路徑的Story
                 .useStoryLoader(new LoadFromClasspath(this.getClass()))
-                        // CONSOLE and TXT reporting
+                // 有Step沒定義到視同Error
+                .usePendingStepStrategy(new FailingUponPendingStep())
+                // CONSOLE和TXT報表
                 .useStoryReporterBuilder(
                         new StoryReporterBuilder().withDefaultFormats().withFormats(
                                 Format.CONSOLE,

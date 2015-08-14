@@ -5,6 +5,7 @@ import com.漢字.漢字步;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
+import org.jbehave.core.failures.FailingUponPendingStep;
 import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.junit.JUnitStories;
@@ -23,6 +24,9 @@ public class 走全部試驗 extends JUnitStories {
     @Override
     public Configuration configuration() {
         return new MostUsefulConfiguration()
+                // 有Step沒定義到視同Error
+                .usePendingStepStrategy(new FailingUponPendingStep())
+                // CONSOLE和TXT報表
                 .useStoryReporterBuilder(
                         new StoryReporterBuilder().withDefaultFormats().withFormats(
                                 Format.CONSOLE,
