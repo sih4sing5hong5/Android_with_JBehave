@@ -46,12 +46,18 @@ dependencies {
 可以參考`src/test/java/com/example/android_with_jbehave/ValidatorTest.java`檔。
 
 ## JBehave的JUnit試驗
-BDD的實作順序應該為：
+BDD的順序應該為：
 
-1. 寫好Story
-2. 寫好JBehave的JUnit設定檔
-3. 寫好JBehave的Steps檔
-4. 實作程式本身
+1. 寫好Story行為檔
+2. 寫好Steps步驟檔，並且執行試驗看步驟是否成功
+3. 實作程式，並且執行試驗看看實作是否符合當初的Story行為檔
+
+對應到JBehave的實作順序：
+
+1. 寫好Story行為檔
+2. 寫好JBehave的JUnit設定檔，並且執行試驗看設定是否成功
+3. 寫好JBehave的Steps步驟檔，並且執行試驗看步驟是否成功
+4. 實作程式本身，並且執行試驗看實作是否符合當初的Story行為檔
 
 ### 自動搜尋Story（JUnitStories）
 java是支援Unicode編碼的，所以package、檔名、型態名、變數、…都可以用漢字。
