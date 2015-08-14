@@ -1,6 +1,6 @@
 # Android專案JBehave設定
 
-配合最近流行的Behaviour-Driven Development (BDD)，
+配合最近流行的Behaviour-Driven Development(BDD)，
 試著讓Android搭配JBehave套件，
 希望可以減少大家的摸索時間。
 
@@ -34,62 +34,99 @@ dependencies {
 若使用Android Studio，更改完請按視窗的`Sync Now`更新gradle相依性。
 
 ## 資料目錄
-資料都在`app/src`資料夾裡
+資料都在`app`資料夾裡
 
-* `main/java`：android主要程式
-* `main/res`：android設定檔
-* `test/java`：unit test試驗檔案
-* `test/resources`：JBehave story檔案
-* `androidTest/test`：android試驗
+* `src/main/java`：Android主要程式
+* `src/main/res`：Android設定檔
+* `src/test/java`：unit test試驗檔案
+* `src/test/resources`：JBehave story檔案
+* `src/androidTest/test`：Android試驗
 
-## 一般Unit test試驗
-可以參考`test/java/com/example/android_with_jbehave/ValidatorTest.java`檔。
+## 一般JUnit試驗
+可以參考`src/test/java/com/example/android_with_jbehave/ValidatorTest.java`檔。
 
 ## 增加BDD試驗
 BDD的實作順序應該為：
 
 1. 寫好Story
-2. 寫好JBehave的JUnitSotry設定檔
+2. 寫好JBehave的JUnit設定檔
 3. 寫好JBehave的Steps檔
 4. 實作程式本身
 
-### 一般試驗
-若寫好一個Story，若放在`test/resources`的`com/example/android_with_jbehave/`，
-則必須在對應路徑`test/java/`的`com/example/android_with_jbehave/`放一個JUnitSotry設定檔。
+### 自動搜尋Story（JUnitStories）
+java是支援Unicode編碼的，所以package、檔名、型態名、變數、…都可以用漢字。
 
-為了方便起見，JBehave規定JUnitSotry設定檔的檔名必須和Story對應。
+若我們寫好了三個Story：
+
+* `src/test/resources/com/漢字/全漢字試驗.story`
+* `src/test/resources/com/漢字/a漢字試驗.story`
+* `src/test/resources/com/example/android_with_jbehave/i_can_toggle_a_cell.story`
+
+接下來寫JUnit設定檔`test/java/com/試驗/走全部試驗.java`，
+其中`storyPaths`函式定義Story檔的路徑
+```java
+@Override
+protected List<String> storyPaths() {
+    return new StoryFinder().findPaths(
+            "src/test/resources",
+            Collections.singletonList("**/*.story"), // 要執行Story檔名
+            null
+    );
+```
+（若只要執行前兩個Story，執行Story檔名參數可改成`Collections.singletonList("**/漢字/*.story")`。）
+
+另外也要定義Story每步做什麼事，加上：
+* `src/test/java/com/漢字/漢字步.java`
+* `src/test/java/com/example/android_with_jbehave/GridSteps.java`
+
+並在JUnit設定檔`test/java/com/試驗/走全部試驗.java`引入：
+```java
+@Override
+public InjectableStepsFactory stepsFactory() {
+    return new InstanceStepsFactory(configuration(), new 漢字步(), new GridSteps());
+}
+```
+這樣就能成功執行三個Story了！！
+
+### 一個Story一個JUnit設定檔（JUnitStory）
+若想要對各別Story做不同設定，或是設定不同的步驟（Steps），可以用
+若Story放在`src/test/resources`的`com/example/android_with_jbehave/`，
+則必須在對應路徑`src/test/java/`的`com/example/android_with_jbehave/`放一個JUnit設定檔。
+
+為了方便起見，JBehave規定這種方式的JUnit設定檔的檔名必須和Story對應。
 若Story叫`i_can_toggle_a_cell.story`，
-則JUnitSotry設定檔必須叫`ICanToggleACell.java`。
+則JUnit設定檔必須叫`ICanToggleACell.java`。
 
 實際檔案內容可以參考JBehave的[Getting Started](http://jbehave.org/reference/stable/getting-started.html)。
 
-寫好了Story和JUnitSotry設定檔後，再來要定義Story裡的每一步要做什麼，就是定義在Steps檔。若Steps檔叫做`GridSteps.java`，在JUnitSotry設定檔就必須載入：
+寫好了Story和JUnit設定檔後，再來要定義Story裡每步要做什麼，寫在Steps檔。
+若Steps檔叫做`GridSteps.java`，在JUnit設定檔就必須載入：
 ```
-    @Override
-    public InjectableStepsFactory stepsFactory() {
-        // varargs, can have more that one steps classes
-        return new InstanceStepsFactory(configuration(), new GridSteps());
-    }
+@Override
+public InjectableStepsFactory stepsFactory() {
+    // varargs, can have more that one steps classes
+    return new InstanceStepsFactory(configuration(), new GridSteps());
+}
 ```
 
-總共新增了以下試驗檔案：
+總共依序新增了以下試驗檔案：
 
-* `test/resources/com/example/android_with_jbehave/i_can_toggle_a_cell.story`
-* `test/java/com/example/android_with_jbehave/ICanToggleACell.java`
-* `test/java/com/example/android_with_jbehave/GridSteps.java`
+* `src/test/resources/com/example/android_with_jbehave/i_can_toggle_a_cell.story`
+* `src/test/java/com/example/android_with_jbehave/ICanToggleACell.java`
+* `src/test/java/com/example/android_with_jbehave/GridSteps.java`
 
-和尚末實作的程式：
+和實作程式：
 
-* `main/java/com/example/android_with_jbehave/Game.java`
-* `main/java/com/example/android_with_jbehave/StringRenderer.java`
+* `src/main/java/com/example/android_with_jbehave/Game.java`
+* `src/main/java/com/example/android_with_jbehave/StringRenderer.java`
 
-### 用漢字命名的函式
-java是支援unicode編碼的，所以package、型態名、變數、…都可以用漢字。
-不過因為JBehave實作的關係（jbehave-core:4.0.3），Story和JUnitSotry設定檔檔名必須英文開頭。
+#### 用漢字命名的JUnitStory
+因為JBehave實作的關係（jbehave-core:4.0.3），JUnitStory的檔名必須英文開頭。
 
 加的程式：
-* `test/resources/com/漢字/a漢字試驗.story`
-* `test/java/com/漢字/A漢字試驗.java`
-* `test/java/com/漢字/漢字步.java`
+* `src/test/resources/com/漢字/a漢字試驗.story`
+* `src/test/java/com/漢字/A漢字試驗.java`
+* `src/test/java/com/漢字/漢字步.java`
+
 
 
