@@ -1,4 +1,4 @@
-package com.漢字;
+package 臺灣.試驗;
 
 
 import org.jbehave.core.annotations.Given;
@@ -8,7 +8,7 @@ import org.jbehave.core.annotations.When;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class 漢字步 {
+public class 加字串步驟 {
 
     private StringBuffer 漢字資料;
 
