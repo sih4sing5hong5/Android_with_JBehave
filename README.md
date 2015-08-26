@@ -43,7 +43,7 @@ dependencies {
 * `src/androidTest/test`：Android試驗
 
 ## 一般JUnit試驗
-可以參考`src/test/java/com/example/android_with_jbehave/ValidatorTest.java`檔。
+可以參考`src/test/java/臺灣/試驗/JUnit試驗.java`檔。
 
 ## JBehave的JUnit試驗
 BDD的順序應該為：
@@ -64,11 +64,12 @@ java是支援Unicode編碼的，所以package、檔名、型態名、變數、�
 
 若我們寫好了三個Story：
 
-* `src/test/resources/com/漢字/全漢字試驗.story`
-* `src/test/resources/com/漢字/a漢字試驗.story`
-* `src/test/resources/com/example/android_with_jbehave/i_can_toggle_a_cell.story`
+* `src/test/resources/臺灣/試驗/加字串次數試驗.story`
+* `src/test/resources/臺灣/試驗/加字串長度試驗.story`
+* `src/test/resources/臺灣/試驗/加字串完整試驗.story`
 
-接下來寫JUnit設定檔`test/java/com/試驗/走全部試驗.java`，
+
+接下來寫JUnit設定檔`src/test/java/臺灣/試驗/走全部試驗.java`，
 其中`storyPaths`函式定義Story檔的路徑
 ```java
 @Override
@@ -79,60 +80,62 @@ protected List<String> storyPaths() {
             null
     );
 ```
-（若只要執行前兩個Story，執行Story檔名參數可改成`Collections.singletonList("**/漢字/*.story")`。）
+（若只要執行特定路徑的Story，執行Story檔名參數可改成`Collections.singletonList("**/試驗/*.story")`。）
 
 另外也要定義Story每步做什麼事，加上：
-* `src/test/java/com/漢字/漢字步.java`
-* `src/test/java/com/example/android_with_jbehave/GridSteps.java`
+* `src/test/java/臺灣/試驗/加字串步驟.java`
 
-並在JUnit設定檔`test/java/com/試驗/走全部試驗.java`引入：
+並在JUnit設定檔`test/java/臺灣/試驗/走全部試驗.java`引入：
 ```java
 @Override
 public InjectableStepsFactory stepsFactory() {
-    return new InstanceStepsFactory(configuration(), new 漢字步(), new GridSteps());
+    return new InstanceStepsFactory(configuration(), new 加字串步驟());
 }
 ```
+這時候執行試驗，會得到錯誤。
+
+接下來實作程式`src/main/java/com/example/android_with_jbehave/加字串.java`
 這樣就能成功執行三個Story了！！
+
+#### 全部檔案
+##### Story行為檔
+* `src/test/resources/臺灣/試驗/加字串次數試驗.story`
+* `src/test/resources/臺灣/試驗/加字串長度試驗.story`
+* `src/test/resources/臺灣/試驗/加字串完整試驗.story`
+
+##### 試驗檔案
+* `src/test/java/臺灣/試驗/走全部試驗.java`
+* `src/test/java/臺灣/試驗/加字串步驟.java`
+
+##### 實作程式
+* `src/main/java/com/example/android_with_jbehave/加字串.java`
+
 
 ### 一個Story一個JUnit設定檔（JUnitStory）
 若想要對各別Story做不同設定，或是設定不同的步驟（Steps），可以用
-若Story放在`src/test/resources`的`com/example/android_with_jbehave/`，
-則必須在對應路徑`src/test/java/`的`com/example/android_with_jbehave/`放一個JUnit設定檔。
+若Story放在`src/test/resources`的`臺灣/試驗/`，
+則必須在對應路徑`src/test/java/`的`臺灣/試驗/`放一個JUnit設定檔。
 
 為了方便起見，JBehave規定這種方式的JUnit設定檔的檔名必須和Story對應。
-若Story叫`i_can_toggle_a_cell.story`，
-則JUnit設定檔必須叫`ICanToggleACell.java`。
-
-實際檔案內容可以參考JBehave的[Getting Started](http://jbehave.org/reference/stable/getting-started.html)。
+若Story叫`加字串長度試驗.story`，
+則JUnit設定檔必須叫`加字串長度試驗.java`。
 
 寫好了Story和JUnit設定檔後，再來要定義Story裡每步要做什麼，寫在Steps檔。
-若Steps檔叫做`GridSteps.java`，在JUnit設定檔就必須載入：
+若Steps檔叫做`src/test/java/臺灣/試驗/加字串步驟.java`，在JUnit設定檔就必須載入：
 ```
 @Override
 public InjectableStepsFactory stepsFactory() {
     // varargs, can have more that one steps classes
-    return new InstanceStepsFactory(configuration(), new GridSteps());
+    return new InstanceStepsFactory(configuration(), new 加字串步驟());
 }
 ```
 
-總共依序新增了以下試驗檔案：
+總共依序用了以下試驗檔案：
 
-* `src/test/resources/com/example/android_with_jbehave/i_can_toggle_a_cell.story`
-* `src/test/java/com/example/android_with_jbehave/ICanToggleACell.java`
-* `src/test/java/com/example/android_with_jbehave/GridSteps.java`
+* `src/test/resources/臺灣/試驗/加字串長度試驗.story`
+* `src/test/java/臺灣/試驗/加字串長度試驗.java`
+* `src/test/java/臺灣/試驗/加字串步驟.java`
 
 和實作程式：
 
-* `src/main/java/com/example/android_with_jbehave/Game.java`
-* `src/main/java/com/example/android_with_jbehave/StringRenderer.java`
-
-#### 用漢字命名的JUnitStory
-因為JBehave實作的關係（jbehave-core:4.0.3），JUnitStory的檔名必須英文開頭。
-
-加的程式：
-* `src/test/resources/com/漢字/a漢字試驗.story`
-* `src/test/java/com/漢字/A漢字試驗.java`
-* `src/test/java/com/漢字/漢字步.java`
-
-
-
+* `src/main/java/com/example/android_with_jbehave/加字串.java`
