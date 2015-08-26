@@ -11,7 +11,7 @@ import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 
-public class 華語漢字試驗 extends JUnitStory {
+public class 加字串長度試驗 extends JUnitStory {
 
     // 從MostUsefulConfiguration改我們要的
     @Override
